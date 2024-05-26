@@ -16,8 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ModelContext>(opt =>
 {
-    opt.UseOracle("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=8.130.9.72)(PORT=1521))" +
-                "(CONNECT_DATA=(SERVICE_NAME=ORCL)));User ID=C##CAR;password=TJ123456");
+    opt.UseMySql("server=110.40.172.207;port=3306;database=dotnet;user=dotnet;password=X6ajhshHW45ijjfF", new MySqlServerVersion(new Version(5, 7, 40)));
 });
 builder.Services.AddDbContext<ModelContext>();
 builder.Services.AddSwaggerGen();

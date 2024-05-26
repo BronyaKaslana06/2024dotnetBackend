@@ -10,7 +10,6 @@ using System.Data;
 using System.Xml.Linq;
 using EntityFramework.Context;
 using EntityFramework.Models;
-using Oracle.ManagedDataAccess.Client;
 using Microsoft.AspNetCore.Authorization;
 
 namespace webapi.Controllers.Admin

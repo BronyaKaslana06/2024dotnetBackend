@@ -4,7 +4,6 @@ using EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Oracle.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -17,87 +16,79 @@ namespace BSS_EFCore.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("C##CAR")
-                .UseCollation("USING_NLS_COMP")
                 .HasAnnotation("ProductVersion", "7.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("EmployeeMaintenanceItem", b =>
                 {
                     b.Property<long>("employeesEmployeeId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<long>("maintenanceItemsMaintenanceItemId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.HasKey("employeesEmployeeId", "maintenanceItemsMaintenanceItemId");
 
                     b.HasIndex("maintenanceItemsMaintenanceItemId");
 
-                    b.ToTable("Employee_MaintenanceItem", "C##CAR");
+                    b.ToTable("Employee_MaintenanceItem", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.Administrator", b =>
                 {
                     b.Property<long>("AdminId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("ADMIN_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("AdminId"));
-
                     b.Property<string>("AccountSerial")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("longtext")
                         .HasColumnName("ACCOUNT_SERIAL");
 
                     b.Property<string>("Email")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("PASSWORD");
 
                     b.HasKey("AdminId")
                         .HasName("SYS_C009148");
 
-                    b.ToTable("ADMINISTRATOR", "C##CAR");
+                    b.ToTable("ADMINISTRATOR", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.Battery", b =>
                 {
                     b.Property<long>("BatteryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("BATTERY_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("BatteryId"));
-
                     b.Property<int?>("AvailableStatus")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("AVAILABLE_STATUS");
 
                     b.Property<long>("BatteryTypeId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<int>("CurrChargeTimes")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("CURR_CHARGE_TIMES");
 
                     b.Property<double>("CurrentCapacity")
-                        .HasColumnType("BINARY_DOUBLE")
+                        .HasColumnType("double")
                         .HasColumnName("CURRENT_CAPACITY");
 
                     b.Property<DateTime>("ManufacturingDate")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("MANUFACTURING_DATE");
 
                     b.Property<long?>("switchStationStationId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.HasKey("BatteryId")
                         .HasName("SYS_C009076");
@@ -106,71 +97,67 @@ namespace BSS_EFCore.Migrations
 
                     b.HasIndex("switchStationStationId");
 
-                    b.ToTable("BATTERY", "C##CAR");
+                    b.ToTable("BATTERY", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.BatteryType", b =>
                 {
                     b.Property<long>("BatteryTypeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("BATTERY_TYPE_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("BatteryTypeId"));
-
                     b.Property<int>("MaxChargeTimes")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("MAX_CHARGE_TIEMS");
 
                     b.Property<string>("Name")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TotalCapacity")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("longtext")
                         .HasColumnName("TOTAL_CAPACITY");
 
                     b.HasKey("BatteryTypeId")
                         .HasName("SYS_C009070");
 
-                    b.ToTable("BATTERY_TYPE", "C##CAR");
+                    b.ToTable("BATTERY_TYPE", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.Employee", b =>
                 {
                     b.Property<long>("EmployeeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("EMPLOYEE_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("EmployeeId"));
-
                     b.Property<string>("AccountSerial")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("longtext")
                         .HasColumnName("ACCOUNT_SERIAL");
 
                     b.Property<DateTime>("CreateTime")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("CREATE_TIME");
 
                     b.Property<string>("Email")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Gender")
                         .HasMaxLength(3)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(3)")
+                        .HasColumnType("varchar(3)")
                         .HasColumnName("GENDER");
 
                     b.Property<string>("IdentityNumber")
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("IDENTITYNUMBER");
 
                     b.Property<string>("Name")
                         .HasMaxLength(30)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(30)")
+                        .HasColumnType("varchar(30)")
                         .HasColumnName("NAME");
 
                     b.Property<string>("Password")
@@ -178,18 +165,18 @@ namespace BSS_EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasDefaultValue("123456")
                         .HasColumnName("PASSWORD");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(20)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(20)")
+                        .HasColumnType("varchar(20)")
                         .HasColumnName("PHONE_NUMBER");
 
                     b.Property<int>("Position")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("POSITIONS");
 
                     b.Property<byte[]>("ProfilePhoto")
@@ -197,49 +184,47 @@ namespace BSS_EFCore.Migrations
                         .HasColumnName("PROFILE_PHOTO");
 
                     b.Property<int>("Salary")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("SALARY");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(30)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(30)")
+                        .HasColumnType("varchar(30)")
                         .HasColumnName("USERNAME");
 
                     b.Property<long?>("switchStationStationId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.HasKey("EmployeeId")
                         .HasName("SYS_C009095");
 
                     b.HasIndex("switchStationStationId");
 
-                    b.ToTable("EMPLOYEE", "C##CAR");
+                    b.ToTable("EMPLOYEE", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.Kpi", b =>
                 {
                     b.Property<long>("KpiId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("KPI_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("KpiId"));
-
                     b.Property<double>("Score")
-                        .HasColumnType("BINARY_DOUBLE")
+                        .HasColumnType("double")
                         .HasColumnName("SCORE");
 
                     b.Property<int>("ServiceFrequency")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("SERVICE_FREQUENCY");
 
                     b.Property<double>("TotalPerformance")
-                        .HasColumnType("BINARY_DOUBLE")
+                        .HasColumnType("double")
                         .HasColumnName("TOTAL_PERFORMANCE");
 
                     b.Property<long>("employeeId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.HasKey("KpiId")
                         .HasName("SYS_C009105");
@@ -247,170 +232,164 @@ namespace BSS_EFCore.Migrations
                     b.HasIndex("employeeId")
                         .IsUnique();
 
-                    b.ToTable("KPI", "C##CAR");
+                    b.ToTable("KPI", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.MaintenanceItem", b =>
                 {
                     b.Property<long>("MaintenanceItemId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("MAINTENANCE_ITEM_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("MaintenanceItemId"));
-
                     b.Property<DateTime>("AppointTime")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("APPOINT_TIME");
 
                     b.Property<string>("Evaluation")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("MaintenanceLocation")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("MAINTENANCE_LOCATION");
 
                     b.Property<string>("Note")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("longtext")
                         .HasColumnName("NOTE");
 
                     b.Property<int>("OrderStatus")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("ORDER_STATUS");
 
                     b.Property<DateTime>("OrderSubmissionTime")
                         .HasPrecision(6)
-                        .HasColumnType("TIMESTAMP(6)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("ORDER_SUBMISSION_TIME");
 
                     b.Property<double>("Score")
-                        .HasColumnType("BINARY_DOUBLE")
+                        .HasColumnType("double")
                         .HasColumnName("SCORE");
 
                     b.Property<DateTime?>("ServiceTime")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("SERVICE_TIME");
 
                     b.Property<string>("Title")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("longtext")
                         .HasColumnName("TITLE");
 
                     b.Property<long>("VehicleId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<double>("latitude")
-                        .HasColumnType("BINARY_DOUBLE");
+                        .HasColumnType("double");
 
                     b.Property<double>("longitude")
-                        .HasColumnType("BINARY_DOUBLE");
+                        .HasColumnType("double");
 
                     b.HasKey("MaintenanceItemId")
                         .HasName("SYS_C009117");
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("MAINTENANCE_ITEM", "C##CAR");
+                    b.ToTable("MAINTENANCE_ITEM", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.News", b =>
                 {
                     b.Property<long>("AnnouncementId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("ANNOUNCEMENT_ID");
-
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("AnnouncementId"));
 
                     b.Property<string>("Contents")
                         .HasMaxLength(2500)
                         .IsUnicode(true)
-                        .HasColumnType("NCLOB")
+                        .HasColumnType("varchar(2500)")
                         .HasColumnName("CONTENTS");
 
                     b.Property<int>("Likes")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("LIKES");
 
                     b.Property<int>("PublishPos")
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("PUBLISH_POS");
 
                     b.Property<DateTime>("PublishTime")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("PUBLISH_TIME");
 
                     b.Property<string>("Title")
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("TITLE");
 
                     b.Property<int>("ViewCount")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("VIEW_COUNT");
 
                     b.Property<long>("administratorAdminId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.HasKey("AnnouncementId")
                         .HasName("SYS_C009098");
 
                     b.HasIndex("administratorAdminId");
 
-                    b.ToTable("NEWS", "C##CAR");
+                    b.ToTable("NEWS", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.OwnerPos", b =>
                 {
                     b.Property<long>("OwnerId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Address")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("longtext")
                         .HasColumnName("ADDRESS");
 
                     b.HasKey("OwnerId")
                         .HasName("SYS_C009099");
 
-                    b.ToTable("OWNERPOS", "C##CAR");
+                    b.ToTable("OWNERPOS", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.SwitchLog", b =>
                 {
                     b.Property<long>("SwitchServiceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("SWITCH_SERVICE_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("SwitchServiceId"));
-
                     b.Property<string>("Evaluation")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("Score")
-                        .HasColumnType("BINARY_DOUBLE")
+                        .HasColumnType("double")
                         .HasColumnName("SCORE");
 
                     b.Property<float>("ServiceFee")
-                        .HasColumnType("BINARY_FLOAT");
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("SwitchTime")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("SWITCH_TIME");
 
                     b.Property<long>("batteryOffBatteryId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<long>("batteryOnBatteryId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<long>("switchRequestId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.HasKey("SwitchServiceId")
                         .HasName("SYS_C009138");
@@ -422,62 +401,60 @@ namespace BSS_EFCore.Migrations
                     b.HasIndex("switchRequestId")
                         .IsUnique();
 
-                    b.ToTable("SWITCH_LOG", "C##CAR");
+                    b.ToTable("SWITCH_LOG", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.SwitchRequest", b =>
                 {
                     b.Property<long>("SwitchRequestId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("SWITCH_REQUEST_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("SwitchRequestId"));
-
                     b.Property<long>("BatteryTypeId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TIMESTAMP(7)");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long>("EmployeeId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("BINARY_DOUBLE");
+                        .HasColumnType("double");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("BINARY_DOUBLE");
+                        .HasColumnType("double");
 
                     b.Property<string>("Note")
                         .HasMaxLength(255)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(255)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("NOTES");
 
                     b.Property<int>("Period")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("PERIOD");
 
                     b.Property<string>("Position")
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("POSITION");
 
                     b.Property<int>("RequestStatus")
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RequestTime")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("REQUEST_TIME");
 
                     b.Property<int>("SwitchType")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("SWITCH_TYPE");
 
                     b.Property<long>("VehicleId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.HasKey("SwitchRequestId")
                         .HasName("SYS_C008772");
@@ -488,110 +465,106 @@ namespace BSS_EFCore.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("SWITCH_REQUEST", "C##CAR");
+                    b.ToTable("SWITCH_REQUEST", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.SwitchStation", b =>
                 {
                     b.Property<long>("StationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("STATION_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("StationId"));
-
                     b.Property<string>("Address")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("AvailableBatteryCount")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("AVAILABLE_BATTERY_COUNT");
 
                     b.Property<int>("BatteryCapacity")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("BATTERY_CAPACITY");
 
                     b.Property<string>("City")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<float>("ElectricityFee")
-                        .HasColumnType("BINARY_FLOAT");
+                        .HasColumnType("float");
 
                     b.Property<bool>("FailureStatus")
-                        .HasColumnType("NUMBER(1)")
+                        .HasColumnType("tinyint(1)")
                         .HasColumnName("FAILURE_STATUS");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("BINARY_DOUBLE")
+                        .HasColumnType("double")
                         .HasColumnName("LATITUDE");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("BINARY_DOUBLE")
+                        .HasColumnType("double")
                         .HasColumnName("LONGITUDE");
 
                     b.Property<string>("ParkingFee")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("QueueLength")
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
                     b.Property<float>("ServiceFee")
-                        .HasColumnType("BINARY_FLOAT")
+                        .HasColumnType("float")
                         .HasColumnName("SERVICE_FEE");
 
                     b.Property<string>("StationName")
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("STATION_NAME");
 
                     b.Property<string>("Tags")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TimeSpan")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("StationId")
                         .HasName("SYS_C009065");
 
-                    b.ToTable("SWITCH_STATION", "C##CAR");
+                    b.ToTable("SWITCH_STATION", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.Vehicle", b =>
                 {
                     b.Property<long>("VehicleId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("VEHICLE_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("VehicleId"));
-
                     b.Property<long>("BatteryId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Mileage")
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
                     b.Property<string>("PlateNumber")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("longtext")
                         .HasColumnName("PLATE_NUMBER");
 
                     b.Property<DateTime>("PurchaseDate")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("PURCHASE_DATE");
 
                     b.Property<int>("Temperature")
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Warranty")
-                        .HasColumnType("TIMESTAMP(7)");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long>("vehicleOwnerOwnerId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.Property<long>("vehicleParamVehicleModelId")
-                        .HasColumnType("NUMBER(19)");
+                        .HasColumnType("bigint");
 
                     b.HasKey("VehicleId")
                         .HasName("SYS_C009110");
@@ -603,54 +576,52 @@ namespace BSS_EFCore.Migrations
 
                     b.HasIndex("vehicleParamVehicleModelId");
 
-                    b.ToTable("VEHICLE", "C##CAR");
+                    b.ToTable("VEHICLE", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.VehicleOwner", b =>
                 {
                     b.Property<long>("OwnerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("OWNER_ID");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("OwnerId"));
-
                     b.Property<string>("AccountSerial")
-                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnType("longtext")
                         .HasColumnName("ACCOUNT_SERIAL");
 
                     b.Property<DateTime?>("Birthday")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("BIRTHDAY");
 
                     b.Property<DateTime>("CreateTime")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("CREATE_TIME");
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("EMAIL");
 
                     b.Property<string>("Gender")
                         .HasMaxLength(3)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(3)")
+                        .HasColumnType("varchar(3)")
                         .HasColumnName("GENDER");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("PASSWORD");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(20)")
+                        .HasColumnType("varchar(20)")
                         .HasColumnName("PHONE_NUMBER");
 
                     b.Property<byte[]>("ProfilePhoto")
@@ -660,41 +631,39 @@ namespace BSS_EFCore.Migrations
                     b.Property<string>("Username")
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("USERNAME");
 
                     b.HasKey("OwnerId")
                         .HasName("SYS_C009088");
 
-                    b.ToTable("VEHICLE_OWNER", "C##CAR");
+                    b.ToTable("VEHICLE_OWNER", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Models.VehicleParam", b =>
                 {
                     b.Property<long>("VehicleModelId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)")
+                        .HasColumnType("bigint")
                         .HasColumnName("VEHICLE_MODEL");
-
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("VehicleModelId"));
 
                     b.Property<string>("Manufacturer")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("MANUFACTURER");
 
                     b.Property<int>("MaxSpeed")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("int")
                         .HasColumnName("MAX_SPEED");
 
                     b.Property<string>("ModelName")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("ServiceTerm")
-                        .HasColumnType("TIMESTAMP(7)")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("SERVICE_TERM");
 
                     b.Property<byte[]>("Sinp")
@@ -705,13 +674,13 @@ namespace BSS_EFCore.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("NVARCHAR2(50)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("TRANSMISSION");
 
                     b.HasKey("VehicleModelId")
                         .HasName("SYS_C009081");
 
-                    b.ToTable("VEHICLE_PARAM", "C##CAR");
+                    b.ToTable("VEHICLE_PARAM", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeMaintenanceItem", b =>

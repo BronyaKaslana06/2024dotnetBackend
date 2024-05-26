@@ -8,12 +8,6 @@ namespace EntityFramework.Context;
 
 public class ModelContext : DbContext
 {
-    public ModelContext(DbContextOptions<ModelContext> options)
-        : base(options)
-    {
-
-    }
-
     public virtual DbSet<Administrator> Administrators { get; set; }
 
     public virtual DbSet<Battery> Batteries { get; set; }
@@ -46,19 +40,23 @@ public class ModelContext : DbContext
 
     public virtual DbSet<VehicleParam> VehicleParams { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+    public ModelContext() : base() { }
+    public ModelContext(DbContextOptions<ModelContext> options)
+        : base(options)
     {
-        //optionsBuilder.LogTo(Console.WriteLine);
-        base.OnConfiguring(optionsBuilder);
 
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseMySql("Server=110.40.172.207;Port=3306;Database=dotnet;Uid=dotnet;Pwd=X6ajhshHW45ijjfF;", ServerVersion.AutoDetect("Server=110.40.172.207;Port=3306;Database=dotnet;Uid=dotnet;Pwd=X6ajhshHW45ijjfF;"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
+        /*modelBuilder
             .HasDefaultSchema("C##CAR")
-            .UseCollation("USING_NLS_COMP");
+            .UseCollation("USING_NLS_COMP");*/
 
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);

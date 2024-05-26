@@ -127,7 +127,7 @@ namespace webapi.Controllers
                     //定义新tuple
                     VehicleOwner owner = new VehicleOwner
                     {
-                        OwnerId = _context.VehicleOwners.Max(x=>x.OwnerId) + 1,
+                        //OwnerId = _context.VehicleOwners.Max(x=>x.OwnerId) + 1,
                         AccountSerial = uid,
                         Username = username,
                         Password = password,
@@ -137,6 +137,7 @@ namespace webapi.Controllers
                         Gender = gender,
                         Birthday = Convert.ToDateTime(user.birthday == null ? "2000-01-01" : user.birthday),   
                     };
+                    _context.VehicleOwners.Add(owner);
                     try
                     {
                         _context.SaveChanges();
@@ -145,7 +146,8 @@ namespace webapi.Controllers
                     {
                         return Conflict();
                     }
-                    _context.VehicleOwners.Add(owner);
+                   /* _context.VehicleOwners.Add(owner);
+                    _context.SaveChanges();*/
                     OwnerPos OP = new OwnerPos
                     {
                         OwnerId = owner.OwnerId,
@@ -185,7 +187,7 @@ namespace webapi.Controllers
                     string uid = ((int)user_type).ToString() + snake.ToString();
                     Employee employee = new Employee
                     {
-                        EmployeeId = _context.Employees.Max(x => x.EmployeeId) + 1,
+                        //EmployeeId = _context.Employees.Max(x => x.EmployeeId) + 1,
                         AccountSerial = uid,
                         UserName = username,
                         Password = password,
