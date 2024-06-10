@@ -10,6 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Transactions;
 using Idcreator;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Service;
 
 namespace webapi.Controllers
 {
@@ -18,80 +19,92 @@ namespace webapi.Controllers
     {
         private readonly ModelContext _context;
         private readonly JwtHelper _jwtHelper;
+        private readonly IdentityService _service;
 
-        public IdentityController(ModelContext context, JwtHelper jwtHelper)
+        public IdentityController(IdentityService service,ModelContext context, JwtHelper jwtHelper)
         {
             _context = context;
             _jwtHelper = jwtHelper;
+            _service = service;
         }
 
         [HttpPost("login")]
         public ActionResult LoginCheck([FromBody] dynamic _user)
         {
+            //dynamic user = JsonConvert.DeserializeObject<dynamic>(Convert.ToString(_user));
+            //char usertype = Convert.ToString(user.user_id)[0];
+            //IdentityType user_type = (IdentityType)Convert.ToInt32(usertype - '0');
+            //string account_serial = user.user_id;
+            //string password = user.password;
+            //string token = _jwtHelper.CreateToken(account_serial, password);
+            //switch (user_type)
+            //{
+            //    case IdentityType.车主:
+            //        var owner = _context.VehicleOwners.Where(x=>x.AccountSerial == account_serial).DefaultIfEmpty().FirstOrDefault();
+            //        if (owner == null)
+            //            return NewContent("",new { }, 1, "User ID error.");
+            //        if (owner.Password != password)
+            //            return NewContent("", new { }, 1, "Password error.");
+            //        return NewContent(token,
+            //            new
+            //            {
+            //                user_type = (int)user_type,
+            //                user_id = owner.OwnerId,
+            //                account_serial = owner.AccountSerial,
+            //                username = owner.Username,
+            //                phone_number = owner.PhoneNumber,
+            //                gender = owner.Gender,
+            //                email = owner.Email
+            //            });
+            //    case IdentityType.员工:
+            //        var staff = _context.Employees
+            //            .Include(a=>a.switchStation)
+            //            .Where(x => x.AccountSerial == account_serial)
+            //            .DefaultIfEmpty().FirstOrDefault();
+            //        if (staff == null)
+            //            return NewContent("", new { }, 1, "User ID error.");
+            //        if (staff.Password != password)
+            //            return NewContent("", new { }, 1, "Password error.");
+            //        return NewContent(token,
+            //            new
+            //            {
+            //                user_type = (int)user_type,
+            //                user_id = staff.EmployeeId,
+            //                account_serial = staff.AccountSerial,
+            //                username = staff.UserName,
+            //                phone_number = staff.PhoneNumber,
+            //                gender = staff.Gender,
+            //                station_id = staff.switchStation == null ? 0 : staff.switchStation.StationId,
+            //                position = (PositionEnum)staff.Position,
+            //                email = staff.Email
+            //            });
+            //    case IdentityType.管理员:
+            //        var admin = _context.Administrators.Where(x => x.AccountSerial == account_serial).DefaultIfEmpty().FirstOrDefault();
+            //        if (admin == null)
+            //            return NewContent("", new { }, 1, "User ID error.");
+            //        if (admin.Password != password)
+            //            return NewContent("", new { }, 1, "Password error.");
+            //        return NewContent(token,
+            //            new
+            //            {
+            //                user_type = (int)user_type,
+            //                user_id = admin.AdminId,
+            //                account_serial = admin.AccountSerial,
+            //                email = admin.Email
+            //            });
+            //    default:
+            //        return NotFound("身份无法识别");
+            //}
             dynamic user = JsonConvert.DeserializeObject<dynamic>(Convert.ToString(_user));
             char usertype = Convert.ToString(user.user_id)[0];
-            IdentityType user_type = (IdentityType)Convert.ToInt32(usertype - '0');
             string account_serial = user.user_id;
             string password = user.password;
-            string token = _jwtHelper.CreateToken(account_serial, password);
-            switch (user_type)
-            {
-                case IdentityType.车主:
-                    var owner = _context.VehicleOwners.Where(x=>x.AccountSerial == account_serial).DefaultIfEmpty().FirstOrDefault();
-                    if (owner == null)
-                        return NewContent("",new { }, 1, "User ID error.");
-                    if (owner.Password != password)
-                        return NewContent("", new { }, 1, "Password error.");
-                    return NewContent(token,
-                        new
-                        {
-                            user_type = (int)user_type,
-                            user_id = owner.OwnerId,
-                            account_serial = owner.AccountSerial,
-                            username = owner.Username,
-                            phone_number = owner.PhoneNumber,
-                            gender = owner.Gender,
-                            email = owner.Email
-                        });
-                case IdentityType.员工:
-                    var staff = _context.Employees
-                        .Include(a=>a.switchStation)
-                        .Where(x => x.AccountSerial == account_serial)
-                        .DefaultIfEmpty().FirstOrDefault();
-                    if (staff == null)
-                        return NewContent("", new { }, 1, "User ID error.");
-                    if (staff.Password != password)
-                        return NewContent("", new { }, 1, "Password error.");
-                    return NewContent(token,
-                        new
-                        {
-                            user_type = (int)user_type,
-                            user_id = staff.EmployeeId,
-                            account_serial = staff.AccountSerial,
-                            username = staff.UserName,
-                            phone_number = staff.PhoneNumber,
-                            gender = staff.Gender,
-                            station_id = staff.switchStation == null ? 0 : staff.switchStation.StationId,
-                            position = (PositionEnum)staff.Position,
-                            email = staff.Email
-                        });
-                case IdentityType.管理员:
-                    var admin = _context.Administrators.Where(x => x.AccountSerial == account_serial).DefaultIfEmpty().FirstOrDefault();
-                    if (admin == null)
-                        return NewContent("", new { }, 1, "User ID error.");
-                    if (admin.Password != password)
-                        return NewContent("", new { }, 1, "Password error.");
-                    return NewContent(token,
-                        new
-                        {
-                            user_type = (int)user_type,
-                            user_id = admin.AdminId,
-                            account_serial = admin.AccountSerial,
-                            email = admin.Email
-                        });
-                default:
-                    return NotFound("身份无法识别");
-            }
+            var result = _service.AuthenticateUser(account_serial, password);
+            Console.WriteLine(result.userData);
+            if (!result.IsAuthenticated)
+                return NewContent("", new { }, 1, result.ErrorMessage);
+            var token = _jwtHelper.CreateToken(result.userData.account_serial, password);
+            return NewContent(token, result.userData);
         }
 
         [HttpPost("sign-up")]
@@ -233,7 +246,7 @@ namespace webapi.Controllers
                     string uid = ((int)user_type).ToString() + snake.ToString();
                     Administrator admin = new Administrator
                     {
-                        AdminId = _context.Administrators.Max(x => x.AdminId) + 1,
+                        //AdminId = _context.Administrators.Max(x => x.AdminId) + 1,
                         AccountSerial = uid,
                         Email = user.email,
                         Password = password

@@ -31,6 +31,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BSS_EFCore\BSS_EFCore.csproj" />
+    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 
 </Project>
