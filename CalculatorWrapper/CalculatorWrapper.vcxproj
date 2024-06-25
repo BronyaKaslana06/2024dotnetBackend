@@ -17,7 +17,6 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -113,10 +112,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\22689\OneDrive\juniorSpring\dotNET\CalculatorWrapper\CalculatorWrapper.h" />
+    <ClInclude Include="CalculatorWrapper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\22689\OneDrive\juniorSpring\dotNET\CalculatorWrapper\CalculatorWrapper.cpp" />
+    <ClCompile Include="CalculatorWrapper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
