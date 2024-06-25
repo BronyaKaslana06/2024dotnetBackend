@@ -1,13 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Data;
-using EntityFramework.Context;
-using EntityFramework.Models;
-using Idcreator;
-using CalculatorWrapper;
-using System.Transactions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Service.Admins;
 using Microsoft.AspNetCore.Authorization;
 
 namespace webapi.Controllers.Admin
@@ -16,70 +9,19 @@ namespace webapi.Controllers.Admin
     [ApiController]
     public class BatteryController : ControllerBase
     {
-        private readonly ModelContext _context;
+        private readonly BatteryService _batteryService;
 
-        public BatteryController(ModelContext context)
+        public BatteryController(BatteryService batteryService)
         {
-            _context = context;
+            _batteryService = batteryService;
         }
 
         [Authorize]
         [HttpGet("query")]
-        public ActionResult<IEnumerable<Battery>> battery(int pageIndex = 0, int pageSize = 0, string available_status = "", string battery_type_id = "", int battery_status = 0, string keyword = "")
+        public IActionResult Battery(int pageIndex = 0, int pageSize = 0, string available_status = "", string battery_type_id = "", int battery_status = 0, string keyword = "")
         {
-            int offset = (pageIndex - 1) * pageSize;
-            int limit = pageSize;
-
-            if (offset < 0 || limit <= 0)
-            {
-                var errorResponse = new
-                {
-                    code = 1,
-                    msg = "页码或页大小非正",
-                    totalData = 0,
-                    data = "",
-                };
-                return Content(JsonConvert.SerializeObject(errorResponse), "application/json");
-            }
-
-            int availableStatusValue = 0;
-            if (!string.IsNullOrEmpty(available_status))
-            {
-                availableStatusValue = (int)Enum.Parse(typeof(AvailableStatusEnum), available_status, ignoreCase: true);
-            }
-            var query = _context.Batteries
-                   .Where(b => (battery_type_id == "" || b.batteryType.Name == battery_type_id) &&
-                   (available_status == "" || b.AvailableStatus == availableStatusValue))
-                   .Select(b => new
-                   {
-                       battery_id = b.BatteryId,
-                       available_status = ((AvailableStatusEnum)b.AvailableStatus).ToString(),
-                       current_capacity = b.CurrentCapacity,
-                       curr_charge_times = b.CurrChargeTimes,
-                       manufacturing_date = b.ManufacturingDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                       battery_type_id = b.batteryType.Name,
-                       name = battery_status == 0 ? b.switchStation.StationName : b.vehicle.PlateNumber,
-                       Similarity = battery_status == 0 ? Calculator.ComputeSimilarityScore(b.switchStation.StationName, keyword) : Calculator.ComputeSimilarityScore(b.vehicle.PlateNumber == null ? "" : b.vehicle.PlateNumber, keyword),
-                       isEditing = false
-                   }).ToList();
-            
-            var filteredItems = query
-                .Where(item => item.Similarity >= (double)0)
-                .OrderByDescending(item => item.Similarity)
-                .ThenBy(item=>item.battery_id);
-            var totalNum = filteredItems.Count();
-            var temp = filteredItems.Skip(offset)
-                   .Take(limit);
-
-            var responseObj = new
-            {
-                code = 0,
-                msg = "success",
-                totaldata = totalNum,
-                data = temp,
-            };
-            return Content(JsonConvert.SerializeObject(responseObj), "application/json");
+            var result = _batteryService.QueryBatteries(pageIndex, pageSize, available_status, battery_type_id, battery_status, keyword);
+            return Content(JsonConvert.SerializeObject(result), "application/json");
         }
-        
     }
 }

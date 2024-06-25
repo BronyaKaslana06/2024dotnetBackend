@@ -8,12 +8,16 @@ using System.Text;
 using webapi;
 using DAL;
 using Service;
+using DAL.Admins;
+using Service.Admins;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IdentityRepository>();
 builder.Services.AddScoped<IdentityService>();
+builder.Services.AddScoped<AnnouncementRepository>();
+builder.Services.AddScoped<AnnouncementService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
