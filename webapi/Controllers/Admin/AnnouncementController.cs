@@ -6,6 +6,7 @@ using EntityFramework.Context;
 using EntityFramework.Models;
 using Idcreator;
 using Microsoft.AspNetCore.Authorization;
+using System.Runtime.InteropServices;
 
 namespace webapi.Controllers.Admin
 {
@@ -14,6 +15,13 @@ namespace webapi.Controllers.Admin
     public class AnnouncementController : ControllerBase
     {
         private readonly ModelContext _context;
+
+        [DllImport("Snowflake.dll")]
+        private static extern long NextId();
+
+        [DllImport("Snowflake.dll")]
+        private static extern void SetWorkerId(int id);
+
 
         public AnnouncementController(ModelContext context)
         {
@@ -133,7 +141,8 @@ namespace webapi.Controllers.Admin
         {
             _acm = JsonConvert.DeserializeObject(Convert.ToString(_acm));
 
-            long id = SnowflakeIDcreator.nextId();
+            //long id = SnowflakeIDcreator.nextId();
+            long id = NextId();
             var acm = new News()
             {
                 AnnouncementId = id,
