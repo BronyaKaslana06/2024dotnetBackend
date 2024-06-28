@@ -19,6 +19,9 @@ namespace CalculatorWrapper {
     }
 
     double Calculator::ComputeSimilarityScore(String^ s, String^ keyword) {
+        if (s == nullptr || keyword == nullptr) {
+            return 0.0; 
+        }
         int m = s->Length;
         int n = keyword->Length;
         array<int, 2>^ dp = gcnew array<int, 2>(m + 1, n + 1);

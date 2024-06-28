@@ -239,7 +239,7 @@ namespace webapi.Controllers.Staff
             {
                 var mn_item = _context.MaintenanceItems.Include(f=>f.vehicle).Single(e => e.MaintenanceItemId == long.Parse(maintenance_item_id));
                 var vehicle = mn_item.vehicle;
-                var vehicle_param=_context.VehicleParams.Include(e=>e.vehicles).Single(f=>f.vehicles.Any(g=>g.VehicleId==vehicle.VehicleId));   
+                //var vehicle_param=_context.VehicleParams.Include(e=>e.vehicles).Single(f=>f.vehicles.Any(g=>g.VehicleId==vehicle.VehicleId));   
                 var owner = _context.VehicleOwners.Include(e => e.vehicles).Single(f => f.vehicles.Any(a => a.VehicleId == vehicle.VehicleId));
 
                 var res = new
@@ -250,7 +250,7 @@ namespace webapi.Controllers.Staff
                     order_status = mn_item.OrderStatusEnum.ToString(),
                     maintenance_location = mn_item.MaintenanceLocation.ToString(),
                     username = owner.Username == null ? "" : owner.Username,
-                    vehicle_model = vehicle_param.ModelName,
+                    //vehicle_model = vehicle_param.ModelName,
                     plate_number = vehicle.PlateNumber == null ? "" : vehicle.PlateNumber.ToString(),
                     remarks = mn_item.Note == null ? "" : mn_item.Note,
                     evaluation = mn_item.Evaluation == null ? "" : mn_item.Evaluation,

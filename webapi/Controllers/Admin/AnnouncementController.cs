@@ -185,7 +185,7 @@ namespace webapi.Controllers.Admin
                 acm.Contents = _acm.contents;
                 //acm.PublishTime = Convert.ToDateTime(_acm.publish_time);
                 acm.Title = _acm.title;
-                acm.PublishPos = _acm.publish_pos;
+                acm.PublishPos = (int)_acm.publish_pos;
                 if(long.TryParse($"{_acm.publisher}",out var b))
                     acm.administrator=_context.Administrators.Find(b);
             }
