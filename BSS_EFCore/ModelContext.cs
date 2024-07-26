@@ -49,7 +49,7 @@ public class ModelContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySql("Server=110.40.172.207;Port=3306;Database=dotnet;Uid=dotnet;Pwd=X6ajhshHW45ijjfF;", ServerVersion.AutoDetect("Server=110.40.172.207;Port=3306;Database=dotnet;Uid=dotnet;Pwd=X6ajhshHW45ijjfF;"));
+        optionsBuilder.UseMySql("Server=xxxxxxx;Port=3306;Database=dotnet;Uid=dotnet;Pwd=xxx;", ServerVersion.AutoDetect("Server=xxxxxxxxx;Port=3306;Database=dotnet;Uid=dotnet;Pwd=xxxx;"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
